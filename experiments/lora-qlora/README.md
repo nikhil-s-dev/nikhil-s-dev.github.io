@@ -1,20 +1,37 @@
-# Expanded comparison: seed 42
+# Expanded LoRA vs QLoRA comparison
 
-The 250-step comparison uses 1,000 training and 200 validation examples with Qwen/Qwen2.5-1.5B-Instruct on a Tesla T4. Both arms used the same fixed split, seed, model revision and installed package versions, including bitsandbytes 0.50.2. A second seed is planned/in progress; these values describe only seed 42.
+Two matched seeds (42 and 43) compare LoRA and QLoRA on a Tesla T4, using Qwen/Qwen2.5-1.5B-Instruct and a fixed, shuffled Dolly 15k split: 1,000 training examples, 200 validation examples and five separate generation examples.
 
-| Measurement | LoRA | QLoRA |
-|---|---:|---:|
-| Training wall time (includes checkpoint saves) | 385.21 s | 528.54 s |
-| Training examples / second | 2.599 | 1.894 |
-| Peak PyTorch allocated GPU memory | 3.624 GiB | 2.714 GiB |
-| Peak PyTorch reserved GPU memory | 3.988 GiB | 3.068 GiB |
-| Held-out language-model loss | 1.852 | 1.888 |
+| Metric | LoRA seed 42 | QLoRA seed 42 | LoRA seed 43 | QLoRA seed 43 |
+|---|---:|---:|---:|---:|
+| Training time, including checkpoint saves | 385.21 s | 528.54 s | 405.01 s | 545.64 s |
+| Training examples / second | 2.599 | 1.894 | 2.472 | 1.834 |
+| Peak allocated GPU memory | 3.624 GiB | 2.714 GiB | 3.624 GiB | 2.715 GiB |
+| Peak reserved GPU memory | 3.988 GiB | 3.068 GiB | 3.863 GiB | 3.068 GiB |
+| Held-out language-model loss | 1.852 | 1.888 | 1.849 | 1.885 |
 
-In this pair, QLoRA used about 25.1% less peak PyTorch allocated memory, but took about 37.2% longer. Both used 256 maximum tokens, batch size 1, gradient accumulation 4, rank 16, FP16 compute, and 250 optimization steps; QLoRA additionally used NF4 and double quantization. Peak memory excludes model load peak and non-PyTorch allocations; evaluation loss covers prompt and response and is not a quality score. The training time includes checkpoint writes. Results from a single pair are not sufficient to characterize variability.
+Averaging the two runs per method, QLoRA used about **25.1% less peak PyTorch allocated memory** (2.715 vs 3.624 GiB) and its training took about **35.9% longer** (537.09 vs 395.11 seconds). These are observations for this workload and two seeds; they are not general performance guarantees or confidence estimates. The matched model revision, T4, dataset split, and package versions were identical across all four runs.
 
-A manual, non-blinded inspection of five held-out generations found that both models accurately summarized a provided hotel description but both invented an incorrect answer to a fictional-universe factual question. In the list-classification example, the LoRA response initially classified all items correctly but added contradictory explanations; QLoRA incorrectly excluded auto and umbrella insurance. These five examples are illustrative, not a statistically representative quality evaluation. Reference answers may themselves require independent verification.
+Both methods used a maximum sequence length of 256, batch size 1, gradient accumulation 4, 250 optimizer steps, learning rate 2e-4, FP16 compute, and LoRA rank 16 / alpha 32. QLoRA used NF4 and double quantization. Peak values measure PyTorch memory during training, including allocations already present at the start, but exclude model-load peaks and non-PyTorch GPU allocations. Training time includes checkpoint writes; it excludes loading, validation, and generation. Validation loss covers instruction, context, and response tokens and is not an instruction-following quality score.
 
-Run [expanded_benchmark.py](expanded_benchmark.py) separately for each method and seed; raw records for completed runs are in [results](results/). In the measured Colab session, training checkpoints were in temporary runtime storage, so they can disappear when the runtime resets.
+## Qualitative review
+
+A manual, non-blinded review of five held-out prompts for each run is illustrative, not a representative quality evaluation. All four generated correct summaries of a provided hotel description, but all four invented the same incorrect founder for a fictional house and supplied fabricated details. Both QLoRA runs misclassified auto and umbrella insurance in a list task. One LoRA seed classified the list correctly, while the other initially classified it correctly but added contradictory explanations. Generated album lists also contained inaccuracies or unsupported claims. No independent pretrained-model baseline or human rating study was performed. Plain instruction/context/response prompts were used rather than the model's chat template; generation was capped at 96 new tokens and some answers were cut off. Reference answers may also need independent verification.
+
+## Reproduce
+
+The measured environment was Python 3.13.16, PyTorch 2.14.1+cu130, transformers 4.51.3, PEFT 0.15.2, datasets 3.5.0, accelerate 1.6.0, bitsandbytes 0.50.2. The model revision recorded by all runs was `989aa7980e4cf806f80c7fef2b1adb7bc71aa306`; the shuffled dataset fingerprint was `0c0b93c19c5b5a29`. The script records the resolved revision and fingerprint, but does not pin them on download: verify both before treating a rerun as matched.
+
+Install a CUDA-compatible PyTorch for the environment, then install [requirements-expanded.txt](requirements-expanded.txt), and launch [expanded_benchmark.py](expanded_benchmark.py) in separate processes:
+
+```bash
+python expanded_benchmark.py lora 42
+python expanded_benchmark.py qlora 42
+python expanded_benchmark.py lora 43
+python expanded_benchmark.py qlora 43
+```
+
+See the four raw metric records in [results](results/). The original measured Colab run saved checkpoints in temporary runtime storage, where they can disappear on reset. For a stronger follow-up, pin dataset and model revisions explicitly, repeat more seeds, track total process VRAM, add a pretrained baseline and blinded generation review, and test broader workloads.
 
 # Earlier 32-step pilot
 
