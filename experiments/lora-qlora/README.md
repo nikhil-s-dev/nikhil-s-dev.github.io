@@ -1,4 +1,23 @@
-# LoRA vs QLoRA: T4 pilot
+# Expanded comparison: seed 42
+
+The 250-step comparison uses 1,000 training and 200 validation examples with Qwen/Qwen2.5-1.5B-Instruct on a Tesla T4. Both arms used the same fixed split, seed, model revision and installed package versions, including bitsandbytes 0.50.2. A second seed is planned/in progress; these values describe only seed 42.
+
+| Measurement | LoRA | QLoRA |
+|---|---:|---:|
+| Training wall time (includes checkpoint saves) | 385.21 s | 528.54 s |
+| Training examples / second | 2.599 | 1.894 |
+| Peak PyTorch allocated GPU memory | 3.624 GiB | 2.714 GiB |
+| Peak PyTorch reserved GPU memory | 3.988 GiB | 3.068 GiB |
+| Held-out language-model loss | 1.852 | 1.888 |
+
+In this pair, QLoRA used about 25.1% less peak PyTorch allocated memory, but took about 37.2% longer. Both used 256 maximum tokens, batch size 1, gradient accumulation 4, rank 16, FP16 compute, and 250 optimization steps; QLoRA additionally used NF4 and double quantization. Peak memory excludes model load peak and non-PyTorch allocations; evaluation loss covers prompt and response and is not a quality score. The training time includes checkpoint writes. Results from a single pair are not sufficient to characterize variability.
+
+A manual, non-blinded inspection of five held-out generations found that both models accurately summarized a provided hotel description but both invented an incorrect answer to a fictional-universe factual question. In the list-classification example, the LoRA response initially classified all items correctly but added contradictory explanations; QLoRA incorrectly excluded auto and umbrella insurance. These five examples are illustrative, not a statistically representative quality evaluation. Reference answers may themselves require independent verification.
+
+Run [expanded_benchmark.py](expanded_benchmark.py) separately for each method and seed; raw records for completed runs are in [results](results/). In the measured Colab session, training checkpoints were in temporary runtime storage, so they can disappear when the runtime resets.
+
+# Earlier 32-step pilot
+
 
 A small, single-seed experiment comparing adapter fine-tuning with an FP16 base model (LoRA) and 4-bit NF4 quantized base weights (QLoRA). Both runs used the same Colab Tesla T4, Qwen/Qwen2.5-1.5B-Instruct, Dolly 15k dataset, seed 42, 128 training examples, 32 held-out examples, maximum sequence length 256, batch size 1, gradient accumulation 4, 32 steps, learning rate 2e-4, and LoRA rank 16 / alpha 32. QLoRA used NF4, double quantization, and FP16 computation.
 
