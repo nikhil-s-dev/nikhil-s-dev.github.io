@@ -1,0 +1,86 @@
+{
+  "experiment": "vLLM offline batch generation",
+  "timestamp_utc": "2026-11-15T20:16:51.652120+00:00",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "model_revision": "not pinned; record resolved revision",
+  "gpu": "Tesla T4",
+  "torch": "2.14.0+cu130",
+  "cuda": "13.0",
+  "vllm": "0.33.0",
+  "python": "3.13.16",
+  "settings": {
+    "max_tokens": 64,
+    "temperature": 0,
+    "ignore_eos": true,
+    "max_model_len": 1024,
+    "gpu_memory_utilization": 0.8,
+    "enforce_eager": true,
+    "warmup_batches": 1
+  },
+  "limitations": "Offline batched calls; timing includes Python and tokenization overhead; no network, gateway, streaming or GPU memory measurements.",
+  "results": [
+    {
+      "batch_size": 1,
+      "trial": 1,
+      "seconds": 2.2408786260000397,
+      "output_tokens": 64,
+      "output_tokens_per_second": 28.560226001280476
+    },
+    {
+      "batch_size": 1,
+      "trial": 2,
+      "seconds": 2.0447218039998916,
+      "output_tokens": 64,
+      "output_tokens_per_second": 31.300101497818915
+    },
+    {
+      "batch_size": 1,
+      "trial": 3,
+      "seconds": 1.858693809999977,
+      "output_tokens": 64,
+      "output_tokens_per_second": 34.43278266472561
+    },
+    {
+      "batch_size": 4,
+      "trial": 1,
+      "seconds": 3.296646319000047,
+      "output_tokens": 256,
+      "output_tokens_per_second": 77.65467545746644
+    },
+    {
+      "batch_size": 4,
+      "trial": 2,
+      "seconds": 1.8141799840000203,
+      "output_tokens": 256,
+      "output_tokens_per_second": 141.1105856407669
+    },
+    {
+      "batch_size": 4,
+      "trial": 3,
+      "seconds": 1.8669160150000152,
+      "output_tokens": 256,
+      "output_tokens_per_second": 137.12454012024634
+    },
+    {
+      "batch_size": 8,
+      "trial": 1,
+      "seconds": 2.3003819020000265,
+      "output_tokens": 512,
+      "output_tokens_per_second": 222.57173887294567
+    },
+    {
+      "batch_size": 8,
+      "trial": 2,
+      "seconds": 1.9625287359999675,
+      "output_tokens": 512,
+      "output_tokens_per_second": 260.88789968169334
+    },
+    {
+      "batch_size": 8,
+      "trial": 3,
+      "seconds": 1.8239534350000213,
+      "output_tokens": 512,
+      "output_tokens_per_second": 280.7089206200015
+    }
+  ]
+}

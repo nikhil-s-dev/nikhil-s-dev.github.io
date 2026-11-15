@@ -19,10 +19,10 @@ To pass a service credential to the upstream, set `UPSTREAM_API_KEY` in the gate
 
 ## GPU measurement
 
-Open [the Colab notebook](vllm_gpu_benchmark.ipynb) to measure offline vLLM batch generation on an available GPU. It records results to a downloadable JSON file. It has not yet been run or validated in Colab, so GPU results are pending.
+A Colab T4 run measured offline vLLM generation on Qwen2.5-0.5B-Instruct at batch sizes 1, 4 and 8. Three-trial medians were 31.30, 137.12 and 260.89 aggregate output tokens/s, respectively. See the [run details](COLAB_RESULTS.md), [raw results](results/colab-t4-2026-11-15.json), and [notebook](vllm_gpu_benchmark.ipynb). This is an offline model benchmark, not a test of the gateway or production latency.
 
 ## Next measurement
 
-Use [llm-loadgate](https://github.com/nikhil-s-dev/llm-loadgate) against the gateway and directly against the same model server. Record the model revision, server version, GPU, request lengths, load pattern, repetitions, TTFT, throughput, errors and cost assumptions. No GPU benchmark has been run for this project yet.
+Use [llm-loadgate](https://github.com/nikhil-s-dev/llm-loadgate) against the gateway and directly against the same model server. Record the model revision, server version, GPU, request lengths, load pattern, repetitions, TTFT, throughput, errors and cost assumptions.
 
 This is a local prototype: it has no client authentication, distributed rate limiting, metrics, TLS termination or production deployment. The timeout is a socket timeout, not an end-to-end deadline. It does not launch vLLM or Triton.
