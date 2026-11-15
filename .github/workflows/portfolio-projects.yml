@@ -1,0 +1,16 @@
+name: Portfolio project tests
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test inference gateway
+        run: cd projects/inference-gateway && python -m unittest -v
+      - name: Test grounded RAG
+        run: cd projects/grounded-rag && python -m unittest -v

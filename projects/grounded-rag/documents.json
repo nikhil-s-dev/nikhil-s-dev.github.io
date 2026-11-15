@@ -1,0 +1,6 @@
+[
+  {"id":"pump-01","title":"Pump inspection","groups":["public"],"text":"Inspect the pump for abnormal vibration and record the reading before scheduling maintenance."},
+  {"id":"permit-01","title":"Maintenance permit","groups":["public"],"text":"Maintenance work requires an approved permit and confirmation of energy isolation by authorized personnel."},
+  {"id":"restricted-01","title":"Fictional restricted note","groups":["maintenance"],"text":"The fictional pump R17 vibration limit is 4 millimeters per second; review the equipment manual before action."},
+  {"id":"handover-01","title":"Shift handover","groups":["public"],"text":"Record open maintenance requests and unresolved alarms during shift handover."}
+]

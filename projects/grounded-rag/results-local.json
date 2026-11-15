@@ -1,0 +1,99 @@
+{
+  "dataset": "8 hand-written queries, 4 fictional documents",
+  "python": "3.12.14",
+  "hit_at_1": 1.0,
+  "hit_at_3": 1.0,
+  "median_ms": 0.022292000011248092,
+  "queries": [
+    {
+      "query": "energy isolation permit",
+      "groups": [
+        "public"
+      ],
+      "expected": "permit-01",
+      "ranked_ids": [
+        "permit-01"
+      ],
+      "elapsed_ms": 0.14540699999088247
+    },
+    {
+      "query": "approved maintenance permit",
+      "groups": [
+        "public"
+      ],
+      "expected": "permit-01",
+      "ranked_ids": [
+        "permit-01",
+        "handover-01",
+        "pump-01"
+      ],
+      "elapsed_ms": 0.03756899997142682
+    },
+    {
+      "query": "pump abnormal vibration",
+      "groups": [
+        "public"
+      ],
+      "expected": "pump-01",
+      "ranked_ids": [
+        "pump-01"
+      ],
+      "elapsed_ms": 0.025398999980552617
+    },
+    {
+      "query": "inspection vibration reading",
+      "groups": [
+        "public"
+      ],
+      "expected": "pump-01",
+      "ranked_ids": [
+        "pump-01"
+      ],
+      "elapsed_ms": 0.02144000001180757
+    },
+    {
+      "query": "unresolved alarms shift handover",
+      "groups": [
+        "public"
+      ],
+      "expected": "handover-01",
+      "ranked_ids": [
+        "handover-01"
+      ],
+      "elapsed_ms": 0.023144000010688615
+    },
+    {
+      "query": "open requests handover",
+      "groups": [
+        "public"
+      ],
+      "expected": "handover-01",
+      "ranked_ids": [
+        "handover-01"
+      ],
+      "elapsed_ms": 0.02002600001560495
+    },
+    {
+      "query": "R17 vibration limit",
+      "groups": [
+        "maintenance"
+      ],
+      "expected": "restricted-01",
+      "ranked_ids": [
+        "restricted-01"
+      ],
+      "elapsed_ms": 0.012781999998878746
+    },
+    {
+      "query": "fictional pump limit millimeters",
+      "groups": [
+        "maintenance"
+      ],
+      "expected": "restricted-01",
+      "ranked_ids": [
+        "restricted-01"
+      ],
+      "elapsed_ms": 0.012347999984285707
+    }
+  ]
+}
