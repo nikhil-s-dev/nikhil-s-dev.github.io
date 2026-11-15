@@ -21,6 +21,8 @@ To pass a service credential to the upstream, set `UPSTREAM_API_KEY` in the gate
 
 A Colab T4 run measured offline vLLM generation on Qwen2.5-0.5B-Instruct at batch sizes 1, 4 and 8. Three-trial medians were 31.30, 137.12 and 260.89 aggregate output tokens/s, respectively. See the [run details](COLAB_RESULTS.md), [raw results](results/colab-t4-2026-11-15.json), and [notebook](vllm_gpu_benchmark.ipynb). This is an offline model benchmark, not a test of the gateway or production latency.
 
+A later [controlled offline and HTTP serving experiment](CONTROLLED_RESULTS.md) ran seven trials per batch and 216 measured streaming requests across direct and gateway paths. Its limitations and aggregate results are documented in the report.
+
 ## Next measurement
 
 Use [llm-loadgate](https://github.com/nikhil-s-dev/llm-loadgate) against the gateway and directly against the same model server. Record the model revision, server version, GPU, request lengths, load pattern, repetitions, TTFT, throughput, errors and cost assumptions.

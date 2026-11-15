@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-15",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "model_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "gpu": "Tesla T4",
+  "vllm": "0.33.0",
+  "torch": "2.14.0+cu130",
+  "python": "3.13.16",
+  "cuda": "13.0",
+  "gateway_source_commit": "b57e068fff4be667d7e84bb2199fec288db81cbb",
+  "offline": {
+    "settings": {
+      "prefix_caching": false,
+      "batches": [
+        1,
+        4,
+        8
+      ],
+      "trials_per_batch": 7,
+      "warmup_per_batch": 1,
+      "seed": 20261115,
+      "max_tokens": 64,
+      "temperature": 0,
+      "ignore_eos": true,
+      "enforce_eager": true,
+      "dtype": "float16"
+    },
+    "summary": {
+      "1": {
+        "median": 36.07565425453463,
+        "min": 31.301490462719936,
+        "max": 37.598859938184155
+      },
+      "4": {
+        "median": 142.6112590817869,
+        "min": 126.8462625255223,
+        "max": 147.38258271291934
+      },
+      "8": {
+        "median": 286.5150766469091,
+        "min": 231.52713990546658,
+        "max": 290.4231987065234
+      }
+    }
+  },
+  "serving": {
+    "settings": {
+      "prefix_caching": false,
+      "concurrency": [
+        1,
+        4,
+        8
+      ],
+      "trials_per_group": 3,
+      "requests_per_trial": 12,
+      "seed": 20261115,
+      "max_tokens": 32,
+      "temperature": 0,
+      "ignore_eos": true,
+      "load": "closed loop",
+      "topology": "client, gateway, server on same Colab VM",
+      "ttft": "request start to first non-empty streamed content",
+      "ttft_quantiles": "nearest rank p95 pooled across 36 successful requests; p50 median",
+      "throughput": "median of per-trial aggregate output tokens/second",
+      "token_counts": "server-reported final usage",
+      "gateway_max_inflight": 8
+    },
+    "summary": {
+      "direct_1": {
+        "requests": 36,
+        "errors": 0,
+        "ttft_p50_ms": 60.919581500002096,
+        "ttft_p95_ms": 87.58799599991107,
+        "output_tokens_per_s_median": 33.54022122681334,
+        "output_tokens_per_s_min": 33.06125804064706,
+        "output_tokens_per_s_max": 33.640614164200024
+      },
+      "direct_4": {
+        "requests": 36,
+        "errors": 0,
+        "ttft_p50_ms": 100.22312000023703,
+        "ttft_p95_ms": 132.2763909997775,
+        "output_tokens_per_s_median": 112.10582289877175,
+        "output_tokens_per_s_min": 109.84212471793052,
+        "output_tokens_per_s_max": 135.00886663876548
+      },
+      "direct_8": {
+        "requests": 36,
+        "errors": 0,
+        "ttft_p50_ms": 99.95383849991413,
+        "ttft_p95_ms": 104.17493100021602,
+        "output_tokens_per_s_median": 200.15728985327993,
+        "output_tokens_per_s_min": 179.35045408285674,
+        "output_tokens_per_s_max": 201.5445364500918
+      },
+      "gateway_1": {
+        "requests": 36,
+        "errors": 0,
+        "ttft_p50_ms": 61.78393949994643,
+        "ttft_p95_ms": 87.05225099993186,
+        "output_tokens_per_s_median": 33.6903546008213,
+        "output_tokens_per_s_min": 32.90170849192628,
+        "output_tokens_per_s_max": 33.72840676009389
+      },
+      "gateway_4": {
+        "requests": 36,
+        "errors": 0,
+        "ttft_p50_ms": 93.31492450019141,
+        "ttft_p95_ms": 120.57577699988542,
+        "output_tokens_per_s_median": 134.44075398701838,
+        "output_tokens_per_s_min": 132.67768613886838,
+        "output_tokens_per_s_max": 135.53460076270474
+      },
+      "gateway_8": {
+        "requests": 36,
+        "errors": 0,
+        "ttft_p50_ms": 106.3056969999252,
+        "ttft_p95_ms": 121.43569400041088,
+        "output_tokens_per_s_median": 197.70652013519378,
+        "output_tokens_per_s_min": 196.89088263857468,
+        "output_tokens_per_s_max": 198.34751550524706
+      }
+    }
+  }
+}
